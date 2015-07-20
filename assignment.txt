@@ -162,7 +162,8 @@ Hints
 You’ll need to figure out how to get C to read input from the keyboard, and pause until 
 input is received. I recommend you use the fgets() function. You’ll also get the chance 
 to become proficient reading and writing files. You may use either the older open, close,
- lseek method of manipulating files, or the STDIO standard input library methods that use fopen, fclose, and fseek.
+ lseek method of manipulating files, or the STDIO standard input library methods that use 
+ fopen, fclose, and fseek.
 
 Grading 
 You should be warned that if your program doesn't compile or doesn't generate room files
