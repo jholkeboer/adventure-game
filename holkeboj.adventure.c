@@ -34,15 +34,22 @@ int main(){
 	strcat(dir_name, pidstring);
 	printf("%s\n", &dir_name);
 	/* mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO); */
-	/* create room files */
-	printf("sdfs");
+		/* create room files */
+	int i;
+	char filename[7] = "room";
+	for (i = 1; i < 8; i++) {
+		char filenum[2];
+		sprintf(filenum, "%d\0", i);
+		strcat(filename, filenum);
+		printf("%s\n", &filename);
+	}
+	
+	
+	/* RUN GAME */
 	printf("Let the advetures begin!\n");
-	int i = 0;
 	int playing = 1;
 	int stepCount = 0;
 	/* SET CURRENT ROOM EQUAL TO START ROOM */
-
-	
 	while (playing == 1) {
 			/* print current room status */
 		printf("CURRENT LOCATION: ");
