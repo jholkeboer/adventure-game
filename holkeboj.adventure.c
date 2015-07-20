@@ -27,21 +27,29 @@ struct room {
 int main(){
 	/*	Create 7 room files
 		 in a directory called holkeboj.rooms.<pid>*/
-	char dir_name[50] = "holkeboj.rooms.";
+	char dir_name[40] = "holkeboj.rooms.";
 	int pid = getpid();
 	char pidstring[10];
-	sprintf(pidstring, "%d\0", pid);
+	sprintf(pidstring, "%d/", pid);
 	strcat(dir_name, pidstring);
 	printf("%s\n", &dir_name);
 	/* mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO); */
 		/* create room files */
 	int i;
 	char filename[7] = "room";
+	char filedir[25];
+	FILE *fp;
 	for (i = 1; i < 8; i++) {
+		/* create filename */
 		char filenum[2];
 		sprintf(filenum, "%d\0", i);
 		strcat(filename, filenum);
-		printf("%s\n", &filename);
+		/* create file  */
+		strcpy(filedir, dir_name);
+		strcat(filedir, filename);
+		printf("%s\n",filedir);
+		//fp = fopen("/")
+		memset(filedir,0,25);
 	}
 	
 	
