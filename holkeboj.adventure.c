@@ -33,12 +33,11 @@ int main(){
 	sprintf(pidstring, "%d/", pid);
 	strcat(dir_name, pidstring);
 	printf("%s\n", &dir_name);
-	/* mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO); */
+	mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO);
 		/* create room files */
 	int i;
 	char filename[7] = "room";
 	char filedir[25];
-	FILE *fp;
 	for (i = 1; i < 8; i++) {
 		/* create filename */
 		char filenum[2];
@@ -48,7 +47,10 @@ int main(){
 		strcpy(filedir, dir_name);
 		strcat(filedir, filename);
 		printf("%s\n",filedir);
-		//fp = fopen("/")
+		FILE *fp;
+		fp = fopen(filedir,"w");
+		fprintf(fp,"TESTLINE: \n");
+		fclose(fp);
 		memset(filedir,0,25);
 	}
 	
