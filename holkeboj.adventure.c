@@ -17,6 +17,22 @@ gcc –o holkeboj.adventure holkeboj.adventure.c
 
 #define MAX_LEN 80
 
+/* room names */
+/*
+const char *roomNames[10];
+roomNames[0] = "Dungeon";
+roomNames[1] = "Bedroom";
+roomNames[2] = "Closet";
+roomNames[3] = "Dining room";
+roomNames[4] = "Foyer";
+roomNames[5] = "Library";
+roomNames[6] = "Office";
+roomNames[7] = "Theater";
+roomNames[8] = "Bathroom";
+roomNames[9] = "Garage";
+*/
+char roomNames[10][MAX_LEN+1] = {"Dungeon","Bedroom","Closet","Dining room","Foyer","Library","Office","Theater","Bathroom","Garage"};  
+
 typedef enum {START_ROOM, END_ROOM, MID_ROOM} roomPos;
  
 struct room {
