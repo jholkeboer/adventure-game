@@ -10,6 +10,7 @@ gcc –o holkeboj.adventure holkeboj.adventure.c
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -24,37 +25,34 @@ struct room {
 };
 
 int main(){
-	//	Create 7 room files
-		// in a directory called holkeboj.rooms.<pid>
+	/*	Create 7 room files
+		 in a directory called holkeboj.rooms.<pid>*/
 	char dir_name[50] = "holkeboj.rooms.";
 	int pid = getpid();
-	char *pidstring;
-	printf("%d\n", pid);
-	printf("%s\n", dir_name);
-	sprintf(pidstring, "%d", pid);
+	char pidstring[10];
+	sprintf(pidstring, "%d\0", pid);
 	strcat(dir_name, pidstring);
-	printf("%s\n", dir_name);
-	// Read room files into memory
-	
-	
-	// Begin user interaction
+	printf("%s\n", &dir_name);
+	/* mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO); */
+	/* create room files */
+	printf("sdfs");
 	printf("Let the advetures begin!\n");
+	int i = 0;
 	int playing = 1;
 	int stepCount = 0;
-	struct room currentRoom;
-	// SET CURRENT ROOM EQUAL TO START ROOM
-	mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO);
+	/* SET CURRENT ROOM EQUAL TO START ROOM */
+
 	
 	while (playing == 1) {
-			//print current room status
+			/* print current room status */
 		printf("CURRENT LOCATION: ");
-		//PRINT CURRENT ROOM NAME
+
 		printf("\nPOSSIBLE CONNECTIONS: ");
-		//PRINT POSSIBLE CONNECTIONS
+
 		printf(".\n");
 		printf("WHERE TO? >");
 		
-		//WRITE ROOM NAME TO HISTORY FILE
+		/* WRITE ROOM NAME TO HISTORY FILE */
 		stepCount++;
 		playing = 0;
 	}
