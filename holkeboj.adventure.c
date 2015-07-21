@@ -54,7 +54,7 @@ int main(){
 	int i;
 	char filename[7] = "room"; 
 	char filedir[25];
-	char gameRooms[7][MAX_LEN+1];
+	char *gameRooms[7];
 	int roomsPicked[10];
 	
 	//Assign start and end rooms by index
@@ -94,6 +94,8 @@ int main(){
 		FILE *fp;
 		fp = fopen(filedir,"w");
 		fprintf(fp,"ROOM NAME: %s\n", &roomNames[randNum]);
+		gameRooms[i] = roomNames[randNum];
+		printf("%s\n",gameRooms[i]);
 		
 		//connections
 		
@@ -112,7 +114,7 @@ int main(){
 	}
 	
 	//connections
-	int possible_connections[22][2];
+	int possible_connections[21][2];
 	possible_connections[0][0] = 0;
 	possible_connections[0][1] = 1;
 	possible_connections[1][0] = 0;
@@ -143,25 +145,24 @@ int main(){
 	possible_connections[13][1] = 5;
 	possible_connections[14][0] = 2;
 	possible_connections[14][1] = 6;
-	possible_connections[15][0] = 2;
-	possible_connections[15][1] = 7;
+	possible_connections[15][0] = 3;
+	possible_connections[15][1] = 4;
 	possible_connections[16][0] = 3;
-	possible_connections[16][1] = 4;
+	possible_connections[16][1] = 5;
 	possible_connections[17][0] = 3;
-	possible_connections[17][1] = 5;
-	possible_connections[18][0] = 3;
-	possible_connections[18][1] = 6;
+	possible_connections[17][1] = 6;
+	possible_connections[18][0] = 4;
+	possible_connections[18][1] = 5;
 	possible_connections[19][0] = 4;
-	possible_connections[19][1] = 5;
-	possible_connections[20][0] = 4;
+	possible_connections[19][1] = 6;
+	possible_connections[20][0] = 5;
 	possible_connections[20][1] = 6;
-	possible_connections[21][0] = 5;
-	possible_connections[21][1] = 6;
+
 	
-	int chosen_connections[22];
+	int chosen_connections[21];
 	int num_of_connections[6];
 	int c;
-	for (c = 0; c < 22; c++) {
+	for (c = 0; c < 21; c++) {
 		chosen_connections[c] = 0;
 	}
 	int randConn;
@@ -170,8 +171,8 @@ int main(){
 		int r;
 		int conn_found = 0;
 		int conn_index;
-		randConn = rand() % 22;
-		for (r=0; r<22; r++) {
+		randConn = rand() % 21;
+		for (r=0; r<21; r++) {
 			if (chosen_connections[r] == 1) {
 				continue;
 			}
@@ -190,7 +191,7 @@ int main(){
 		int room1;
 		int room2;
 		//increment num_of_connections
-		for (r=0; r<22; r++) {
+		for (r=0; r<21; r++) {
 			if (chosen_connections[r] == 1) {
 				room1 = possible_connections[r][0];
 				room2 = possible_connections[r][1];
@@ -201,7 +202,7 @@ int main(){
 		
 		//check num of connections
 		still_connecting = 0;
-		for (r=0; r<22; r++) {
+		for (r=0; r<21; r++) {
 			if (chosen_connections[r] == 1) {
 				room1 = possible_connections[r][0];
 				room2 = possible_connections[r][1];
@@ -211,13 +212,75 @@ int main(){
 			}
 		}
 	}
-	for (c = 0; c < 22; c++) {
+	for (c = 0; c < 21; c++) {
 		if (chosen_connections[c] == 1) {
 			printf("Connection %d: %d connects to %d\n",c,possible_connections[c][0],possible_connections[c][1]);
 		}
 	}
 	
+	// Write connections to files
+	char filename2[7] = "room";
+	for (i = 0; i < 7; i++) {
+		/* create filename */
+		char filenum[2];
+		sprintf(filenum, "%d\0", i);
+		strcat(filename2, filenum);
+		/* create file  */
+		strcpy(filedir, dir_name);
+		strcat(filedir, filename2);
+		FILE *fp;
+		fp = fopen(filedir,"a");
+		
+		//connections
+		int currentRoom = i;
+		int connCount = 1;
+		int c;
+		int room1;
+		int room2;
+		for (c = 0; c < 21; c++) {
+			if (chosen_connections[c] == 1) {
+				room1 = possible_connections[c][0];
+				room2 = possible_connections[c][1];
+				if (currentRoom == room1) {
+					fprintf(fp,"CONNECTION %d: %s\n", connCount, gameRooms[room2]);
+					connCount++;			
+				}
+				else if (currentRoom == room2) {
+					fprintf(fp,"CONNECTION %d: %s\n", connCount, gameRooms[room1]);
+					connCount++;					
+				}
+			}
+		}
+
+		fclose(fp);
+		memset(filedir,0,25);
+	}
 	
+	// append room types
+	// char filename3[7] = "room";
+	// for (i = 0; i < 7; i++) {
+	// 	char filenum[2];
+	// 	sprintf(filenum, "%d\0", i);
+	// 	strcat(filename3, filenum);
+	// 	/* create file  */
+	// 	strcpy(filedir, dir_name);
+	// 	strcat(filedir, filename3);
+	// 	FILE *fp;
+	// 	fp = fopen(filedir,"a");
+	// 	room type
+	// 	if (roomsPicked[i] == startRoom) {
+	// 		fprintf(fp,"ROOM TYPE: %s\n", "START_ROOM");
+	// 	}
+	// 	else if (roomsPicked[i] == endRoom) {
+	// 		fprintf(fp,"ROOM TYPE: %s\n", "END_ROOM");
+	// 	}
+	// 	else {
+	// 		fprintf(fp,"ROOM TYPE: %s\n", "MID_ROOM");
+	// 	}	
+	// 	fclose(fp);
+	// 	memset(filedir,0,25);		
+	// }
+
 	
 	
 	/* RUN GAME */
