@@ -185,7 +185,7 @@ int main(){
 			chosen_connections[conn_index] = 1;
 		}
 		else {
-			break;
+			continue;
 		}
 		
 		int room1;
@@ -256,30 +256,30 @@ int main(){
 		memset(filedir,0,25);
 	}
 	
-	// append room types
-	// char filename3[7] = "room";
-	// for (i = 0; i < 7; i++) {
-	// 	char filenum[2];
-	// 	sprintf(filenum, "%d\0", i);
-	// 	strcat(filename3, filenum);
-	// 	/* create file  */
-	// 	strcpy(filedir, dir_name);
-	// 	strcat(filedir, filename3);
-	// 	FILE *fp;
-	// 	fp = fopen(filedir,"a");
-	// 	room type
-	// 	if (roomsPicked[i] == startRoom) {
-	// 		fprintf(fp,"ROOM TYPE: %s\n", "START_ROOM");
-	// 	}
-	// 	else if (roomsPicked[i] == endRoom) {
-	// 		fprintf(fp,"ROOM TYPE: %s\n", "END_ROOM");
-	// 	}
-	// 	else {
-	// 		fprintf(fp,"ROOM TYPE: %s\n", "MID_ROOM");
-	// 	}	
-	// 	fclose(fp);
-	// 	memset(filedir,0,25);		
-	// }
+	//append room types
+	char filename3[7] = "room";
+	for (i = 0; i < 7; i++) {
+		char filenum[2];
+		sprintf(filenum, "%d\0", i);
+		strcat(filename3, filenum);
+		/* create file  */
+		strcpy(filedir, dir_name);
+		strcat(filedir, filename3);
+		FILE *fp;
+		fp = fopen(filedir,"a");
+		//room type
+		if (i == startRoom) {
+			fprintf(fp,"ROOM TYPE: %s\n", "START_ROOM");
+		}
+		else if (i == endRoom) {
+			fprintf(fp,"ROOM TYPE: %s\n", "END_ROOM");
+		}
+		else {
+			fprintf(fp,"ROOM TYPE: %s\n", "MID_ROOM");
+		}	
+		fclose(fp);
+		memset(filedir,0,25);		
+	}
 
 	
 	
@@ -303,5 +303,8 @@ int main(){
 	}
 	
 	printf("\nCongratulations! You did it!\n");
+	for (i=0; i<21; i++) {
+		printf("%d",chosen_connections[i]);
+	}
 	return 0;
 }
