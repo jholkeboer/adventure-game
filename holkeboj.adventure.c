@@ -49,13 +49,22 @@ int main(){
 	char pidstring[10];
 	sprintf(pidstring, "%d/", pid);
 	strcat(dir_name, pidstring);
-	//mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO);
+	mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO);
 		/* create room files */
 	int i;
 	char filename[7] = "room"; 
 	char filedir[25];
 	char gameRooms[7][MAX_LEN+1];
 	int roomsPicked[10];
+	
+	//Assign start and end rooms by index
+	int startRoom = rand() % 7;
+	printf("%d", startRoom);
+	int endRoom = rand() % 7;
+	while (startRoom == endRoom) {
+		endRoom = rand() % 7;
+	}
+	printf("%d", endRoom);
 	for (i = 0; i < 7; i++) {
 		/* create filename */
 		int randNum;
@@ -74,7 +83,7 @@ int main(){
 			}
 		}
 		roomsPicked[i] = randNum;
-		printf("Selected %d", randNum);
+		printf("Selected %d ", randNum);
 		char filenum[2];
 		sprintf(filenum, "%d\0", i);
 		strcat(filename, filenum);
@@ -82,11 +91,130 @@ int main(){
 		strcpy(filedir, dir_name);
 		strcat(filedir, filename);
 		printf("%s\n",&roomNames[randNum]);
-		//FILE *fp;
-		//fp = fopen(filedir,"w");
-		//fprintf(fp,"TESTLINE: %s\n", &roomNames[randNum]);
-		//fclose(fp);
-		//memset(filedir,0,25);
+		FILE *fp;
+		fp = fopen(filedir,"w");
+		fprintf(fp,"ROOM NAME: %s\n", &roomNames[randNum]);
+		
+		//connections
+		
+		//room type
+		// if (randNum == startRoom) {
+		// 	fprintf(fp,"ROOM TYPE: %s\n", "START_ROOM");
+		// }
+		// else if (randNum == endRoom) {
+		// 	fprintf(fp,"ROOM TYPE: %s\n", "END_ROOM");
+		// }
+		// else {
+		// 	fprintf(fp,"ROOM TYPE: %s\n", "MID_ROOM");
+		// }
+		fclose(fp);
+		memset(filedir,0,25);
+	}
+	
+	//connections
+	int possible_connections[22][2];
+	possible_connections[0][0] = 0;
+	possible_connections[0][1] = 1;
+	possible_connections[1][0] = 0;
+	possible_connections[1][1] = 2;
+	possible_connections[2][0] = 0;
+	possible_connections[2][1] = 3;
+	possible_connections[3][0] = 0;
+	possible_connections[3][1] = 4;
+	possible_connections[4][0] = 0;
+	possible_connections[4][1] = 5;
+	possible_connections[5][0] = 0;
+	possible_connections[5][1] = 6;
+	possible_connections[6][0] = 1;
+	possible_connections[6][1] = 2;
+	possible_connections[7][0] = 1;
+	possible_connections[7][1] = 3;
+	possible_connections[8][0] = 1;
+	possible_connections[8][1] = 4;
+	possible_connections[9][0] = 1;
+	possible_connections[9][1] = 5;
+	possible_connections[10][0] = 1;
+	possible_connections[10][1] = 6;
+	possible_connections[11][0] = 2;
+	possible_connections[11][1] = 3;
+	possible_connections[12][0] = 2;
+	possible_connections[12][1] = 4;
+	possible_connections[13][0] = 2;
+	possible_connections[13][1] = 5;
+	possible_connections[14][0] = 2;
+	possible_connections[14][1] = 6;
+	possible_connections[15][0] = 2;
+	possible_connections[15][1] = 7;
+	possible_connections[16][0] = 3;
+	possible_connections[16][1] = 4;
+	possible_connections[17][0] = 3;
+	possible_connections[17][1] = 5;
+	possible_connections[18][0] = 3;
+	possible_connections[18][1] = 6;
+	possible_connections[19][0] = 4;
+	possible_connections[19][1] = 5;
+	possible_connections[20][0] = 4;
+	possible_connections[20][1] = 6;
+	possible_connections[21][0] = 5;
+	possible_connections[21][1] = 6;
+	
+	int chosen_connections[22];
+	int num_of_connections[6];
+	int c;
+	for (c = 0; c < 22; c++) {
+		chosen_connections[c] = 0;
+	}
+	int randConn;
+	int still_connecting = 1;
+	while (still_connecting == 1) {
+		int r;
+		int conn_found = 0;
+		int conn_index;
+		randConn = rand() % 22;
+		for (r=0; r<22; r++) {
+			if (chosen_connections[r] == 1) {
+				continue;
+			}
+			else {
+				conn_found = 1;
+				conn_index = r;
+			}
+		}
+		if (conn_found == 1) {
+			chosen_connections[conn_index] = 1;
+		}
+		else {
+			break;
+		}
+		
+		int room1;
+		int room2;
+		//increment num_of_connections
+		for (r=0; r<22; r++) {
+			if (chosen_connections[r] == 1) {
+				room1 = possible_connections[r][0];
+				room2 = possible_connections[r][1];
+				num_of_connections[room1]++;
+				num_of_connections[room2]++;
+			}
+		}
+		
+		//check num of connections
+		still_connecting = 0;
+		for (r=0; r<22; r++) {
+			if (chosen_connections[r] == 1) {
+				room1 = possible_connections[r][0];
+				room2 = possible_connections[r][1];
+				if (num_of_connections[room1] < 3 || num_of_connections[room2] < 3) {
+					still_connecting = 1;
+				}				
+			}
+		}
+	}
+	for (c = 0; c < 22; c++) {
+		if (chosen_connections[c] == 1) {
+			printf("Connection %d: %d connects to %d\n",c,possible_connections[c][0],possible_connections[c][1]);
+		}
 	}
 	
 	
