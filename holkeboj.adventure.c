@@ -45,30 +45,51 @@ int main(){
 		 in a directory called holkeboj.rooms.<pid>*/
 	char dir_name[40] = "holkeboj.rooms.";
 	int pid = getpid();
+	srand(pid);
 	char pidstring[10];
 	sprintf(pidstring, "%d/", pid);
 	strcat(dir_name, pidstring);
-	printf("%s\n", &dir_name);
-	mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO);
+	//mkdir(dir_name,S_IRWXU | S_IRWXG | S_IRWXO);
 		/* create room files */
 	int i;
-	char filename[7] = "room";
+	char filename[7] = "room"; 
 	char filedir[25];
-	for (i = 1; i < 8; i++) {
+	char gameRooms[7][MAX_LEN+1];
+	int roomsPicked[10];
+	for (i = 0; i < 7; i++) {
 		/* create filename */
+		int randNum;
+		int newRand = 0;
+		while (newRand != 1) {
+			int j;
+			int found = 0;
+			randNum = rand() % 10;
+			for (j=0; j<10; j++) {
+				if (roomsPicked[j] == randNum) {
+					found = 1;
+				}
+			}
+			if (found == 0) {
+				newRand = 1;
+			}
+		}
+		roomsPicked[i] = randNum;
+		printf("Selected %d", randNum);
 		char filenum[2];
 		sprintf(filenum, "%d\0", i);
 		strcat(filename, filenum);
 		/* create file  */
 		strcpy(filedir, dir_name);
 		strcat(filedir, filename);
-		printf("%s\n",filedir);
-		FILE *fp;
-		fp = fopen(filedir,"w");
-		fprintf(fp,"TESTLINE: \n");
-		fclose(fp);
-		memset(filedir,0,25);
+		printf("%s\n",&roomNames[randNum]);
+		//FILE *fp;
+		//fp = fopen(filedir,"w");
+		//fprintf(fp,"TESTLINE: %s\n", &roomNames[randNum]);
+		//fclose(fp);
+		//memset(filedir,0,25);
 	}
+	
+	
 	
 	
 	/* RUN GAME */
